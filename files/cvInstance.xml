@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="files/cv2html.xsl"?>
+<curriculum xmlns="http://www.cv.fr/ns">
+   <cvPart type="identity">
+      <persName/>
+      <occupation/>
+      <contact>
+         <address>
+            <addrLine/>
+         </address>
+         <phone/>
+         <mail><ref type="mailto" target=""/></mail>
+         <github><ref type="link" target=""/></github>
+      </contact>
+   </cvPart>
+   <cvPart type="education">
+      <head>Formation</head>
+      <cvEntry type="diploma">
+         <orgName/>
+         <placeName/>
+         <date from="" to=""/>
+         <degree/>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="workExperience">
+      <head>Expérience professionnelle</head>
+      <cvEntry type="experience">
+         <position/>
+         <orgName/>
+         <placeName/>
+         <date from="" to=""/>
+         <list type="taks">
+            <item/>
+         </list>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="skills">
+      <head>Compétences techniques</head>
+      <cvEntry type="programming">
+         <head/>
+         <list>
+            <item/>
+         </list>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="publications">
+      <head>Liste des travaux / publications</head>
+      <cvEntry type="scholar">
+         <head/>
+         <bibl/>
+      </cvEntry>
+   </cvPart>
+</curriculum>
