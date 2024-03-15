@@ -1,0 +1,459 @@
+<?xml-stylesheet href="files/xsltforms/xsltforms.xsl" type="text/xsl"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" lang="en">
+   <head>
+      <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover"/>
+      <title>CV Forms</title>
+      <xf:model>
+         <xf:instance id="cv" src="cv.xml"/>
+         <xf:instance id="cvCopy" src="files/cv.xml"/>
+         <!--<xf:instance id="xslt" src="files/cv2html.xsl"/>-->
+         <xf:submission id="save2file" ref="instance('cv')" method="put" resource="file:" mediatype="application/xml" value="form-source()"/>
+      </xf:model>
+   </head>
+   <body>
+      <div class="form">
+         <xf:trigger>
+            <xf:label>About</xf:label>
+            <xf:toggle case="aboutPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Form</xf:label>
+            <xf:toggle case="formPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Configuration</xf:label>
+            <xf:toggle case="configPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>View</xf:label>
+            <xf:toggle case="viewPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+      </div>
+      <xf:case id="aboutPanel" selected="true">
+         <h1>cvForms</h1>
+         <p>CvForms is web form made with <a href="https://www.w3.org/TR/xforms11/">XForms</a> and <a href="https://github.com/AlainCouthures/declarative4all">XSLTForms client</a> to write and store <em>curriculum vitæ</em> in XML Format.</p>
+         <p>A ready to print CSS allows you to save or print your <em>curriculum vitæ</em> as PDF. Just press <code>ctrl/cmd + p</code> and click <code>save as pdf</code>.</p>
+         <p>You can change color and fonts wiht the <code>configuration</code> panel.</p>
+            <p>All empty sections will be ignored for the output.</p>
+      </xf:case>
+      <xf:case id="formPanel" selected="false">
+         <xf:trigger>
+            <xf:label>Identité</xf:label>
+            <xf:toggle case="identityPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Formation</xf:label>
+            <xf:toggle case="educationPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Concours</xf:label>
+            <xf:toggle case="examinationPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Expérience professionelle</xf:label>
+            <xf:toggle case="experiencePanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Compétences</xf:label>
+            <xf:toggle case="skillsPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Autre</xf:label>
+            <xf:toggle case="otherPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:trigger>
+            <xf:label>Publications</xf:label>
+            <xf:toggle case="publicationsPanel" ev:event="DOMActivate" />
+         </xf:trigger>
+         <xf:submit submission="save2file">
+            <xf:label>Save</xf:label>
+         </xf:submit>
+         <xf:case id="identityPanel" selected="true">
+            <xf:group ref="cvPart[@type='identity']">
+               <xf:label>Identité</xf:label>
+               <xf:input ref="head">
+                  <xf:label>Label</xf:label>
+               </xf:input>
+               <xf:input ref="persName">
+                  <xf:label>Patronyme</xf:label>
+               </xf:input>
+               <xf:input ref="occupation">
+                  <xf:label>Poste</xf:label>
+               </xf:input>
+               <xf:group ref="contact">
+                  <xf:label>Contact</xf:label>
+                  <xf:input ref="phone">
+                     <xf:label>Téléphone</xf:label>
+                  </xf:input>
+                  <xf:group ref="address">
+                     <xf:label>
+                        Adresse
+                        <xf:trigger>
+                           <xf:label>+</xf:label>
+                           <xf:insert context="." nodeset="addrLine" at="last()" position="after" origin="instance('cvCopy')/cvPart[@type='identity']/contact/address/addrLine" ev:event="DOMActivate"/>
+                        </xf:trigger>
+                     </xf:label>
+                     <xf:repeat nodeset="addrLine">
+                        <xf:input ref=".">
+                           <xf:label>
+                              Ligne d’adresse
+                              <xf:trigger ref="self::addrLine[count(parent::address/addrLine) > 1]">
+                                 <xf:label>-</xf:label>
+                                 <xf:delete nodeset="." ev:event="DOMActivate"/>
+                              </xf:trigger>
+                           </xf:label>
+                        </xf:input>
+                     </xf:repeat>
+                  </xf:group>
+                  <xf:input ref="mail/ref">
+                     <xf:label>Adresse mail</xf:label>
+                  </xf:input>
+                  <xf:input ref="github/ref">
+                     <xf:label>Github</xf:label>
+                  </xf:input>
+               </xf:group>
+            </xf:group>
+         </xf:case>
+         <xf:case id="educationPanel" selected="false">
+            <xf:group ref="cvPart[@type='education']">
+               <xf:label>
+                  Formation
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="cvEntry" at="1" position="before" origin="instance('cvCopy')/cvPart[@type='education']/cvEntry[last()]" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:label>
+               <xf:input ref="head">
+                  <xf:label>Label</xf:label>
+               </xf:input>
+               <xf:repeat nodeset="cvEntry">
+                  <xf:label>
+                     Entry
+                     <xf:trigger ref="self::cvEntry[count(parent::cvPart/cvEntry) > 1]">
+                        <xf:label>-</xf:label>
+                        <xf:delete nodeset="." ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:label>
+                  <xf:input ref="orgName">
+                     <xf:label>Institution</xf:label>
+                  </xf:input>
+                  <xf:input ref="placeName">
+                     <xf:label>Lieu</xf:label>
+                  </xf:input>
+                  <xf:input ref="degree">
+                     <xf:label>Diplôme</xf:label>
+                  </xf:input>
+                  <xf:group ref="date">
+                     <xf:label>Dates</xf:label>
+                     <xf:input ref="@from">
+                        <xf:label>début</xf:label>
+                     </xf:input>
+                     <xf:input ref="@to">
+                        <xf:label>fin</xf:label>
+                     </xf:input>
+                  </xf:group>
+               </xf:repeat>
+            </xf:group>
+         </xf:case>
+         <xf:case id="examinationPanel" selected="false">
+            <xf:group ref="cvPart[@type='examination']">
+               <xf:label>
+                  Concours
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="cvEntry" at="1" position="before" origin="instance('cvCopy')/cvPart[@type='examination']/cvEntry" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:label>
+               <xf:input ref="head">
+                  <xf:label>Label</xf:label>
+               </xf:input>
+               <xf:repeat nodeset="cvEntry">
+                  <xf:label>
+                     Concours
+                     <xf:trigger ref="self::cvEntry[count(parent::cvPart/cvEntry) > 1]">
+                        <xf:label>-</xf:label>
+                        <xf:delete nodeset="." ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:label>
+                  <xf:input ref="orgName">
+                     <xf:label>Institution</xf:label>
+                  </xf:input>
+                  <xf:input ref="desc">
+                     <xf:label>Intitulé</xf:label>
+                  </xf:input>
+                  <xf:input ref="rank">
+                     <xf:label>Position</xf:label>
+                  </xf:input>
+                  <xf:input ref="date/@when">
+                     <xf:label>date</xf:label>
+                  </xf:input>
+               </xf:repeat>
+            </xf:group>
+         </xf:case>
+         <xf:case id="experiencePanel" selected="false">
+            <xf:group ref="cvPart[@type='workExperience']">
+               <xf:label>
+                  Expérience professionnelle
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="cvEntry" at="1" position="before" origin="instance('cvCopy')/cvPart[@type='workExperience']/cvEntry" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:label>
+               <xf:input ref="head">
+                  <xf:label>Label</xf:label>
+               </xf:input>
+               <xf:repeat nodeset="cvEntry">
+                  <xf:label>
+                     Entry
+                     <xf:trigger ref="self::cvEntry[count(parent::cvPart/cvEntry) > 1]">
+                        <xf:label>-</xf:label>
+                        <xf:delete nodeset="." ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:label>
+                  <xf:input ref="position">
+                     <xf:label>Poste</xf:label>
+                  </xf:input>
+                  <xf:input ref="orgName">
+                     <xf:label>Institution</xf:label>
+                  </xf:input>
+                  <xf:input ref="placeName">
+                     <xf:label>Lieu</xf:label>
+                  </xf:input>
+                  <xf:input ref="degree">
+                     <xf:label>Diplôme</xf:label>
+                  </xf:input>
+                  <xf:group ref="date">
+                     <xf:label>Dates</xf:label>
+                     <xf:input ref="@from">
+                        <xf:label>début</xf:label>
+                     </xf:input>
+                     <xf:input ref="@to">
+                        <xf:label>fin</xf:label>
+                     </xf:input>
+                  </xf:group>
+                  <xf:group ref="list[@type='tasks']">
+                     <xf:label>
+                        Missions
+                        <xf:trigger>
+                           <xf:label>+</xf:label>
+                           <xf:insert context="." nodeset="item" at="last()" position="after" origin="instance('cvCopy')/cvPart[@type='workExperience']/cvEntry/list[@type='tasks']/item" ev:event="DOMActivate"/>
+                        </xf:trigger>
+                     </xf:label>
+                     <xf:repeat nodeset="item">
+                        <xf:input ref=".">
+                           <xf:label>
+                              Tâche
+                              <xf:trigger ref="self::item[count(parent::list/item) > 1]">
+                                 <xf:label>-</xf:label>
+                                 <xf:delete nodeset="." ev:event="DOMActivate"/>
+                              </xf:trigger>
+                           </xf:label>
+                        </xf:input>
+                     </xf:repeat>
+                  </xf:group>
+                  <xf:group ref="list[@type='resources']">
+                     <xf:label>
+                        Ressources en ligne
+                        <xf:trigger>
+                           <xf:label>+</xf:label>
+                           <xf:insert context="." nodeset="item" at="last()" position="after" origin="instance('cvCopy')/cvPart[@type='workExperience']/cvEntry/list[@type='resources']/item" ev:event="DOMActivate"/>
+                        </xf:trigger>
+                     </xf:label>
+                     <xf:repeat nodeset="item">
+                        <xf:input ref="ref">
+                           <xf:label>Label</xf:label>
+                        </xf:input>
+                        <xf:input ref="ref/@target">
+                           <xf:label>url</xf:label>
+                        </xf:input>
+                        <xf:trigger ref="self::item[count(parent::list/item) > 1]">
+                           <xf:label>-</xf:label>
+                           <xf:delete nodeset="." ev:event="DOMActivate"/>
+                        </xf:trigger>
+                     </xf:repeat>
+                  </xf:group>
+               </xf:repeat>
+            </xf:group>
+         </xf:case>
+         <xf:case id="skillsPanel" selected="false">
+            <xf:group ref="cvPart[@type='skills']">
+               <xf:label>
+                  Compétences
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="cvEntry" at="1" position="before" origin="instance('cvCopy')/cvPart[@type='skills']/cvEntry[last()]" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:label>
+               <xf:input ref="head">
+                  <xf:label>Label</xf:label>
+               </xf:input>
+               <xf:repeat nodeset="cvEntry">
+                  <xf:label>
+                     Entry
+                     <xf:trigger ref="self::cvEntry[count(parent::cvPart/cvEntry) > 1]">
+                        <xf:label>-</xf:label>
+                        <xf:delete nodeset="." ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:label>
+                  <xf:input ref="head">
+                     <xf:label>Type</xf:label>
+                  </xf:input>
+                  <xf:group ref="list">
+                     <xf:repeat nodeset="item">
+                        <xf:input ref=".">
+                           <xf:label>
+                              Compétence
+                              <xf:trigger ref="self::item[count(parent::list/item) > 1]">
+                                 <xf:label>-</xf:label>
+                                 <xf:delete nodeset="." ev:event="DOMActivate"/>
+                              </xf:trigger>
+                           </xf:label>
+                        </xf:input>
+                     </xf:repeat>
+                     <xf:trigger ref="self::list">
+                        <xf:label>+</xf:label>
+                        <xf:insert context="." nodeset="item" at="last()" position="after" origin="instance('cvCopy')/cvPart[@type='skills']/cvEntry[last()]/list/item[1]" ev:event="DOMActivate"/>
+                        <xf:setvalue ref="item[last()]" value="''" ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:group>
+               </xf:repeat>
+            </xf:group>
+         </xf:case>
+         <xf:case id="otherPanel" selected="false">
+            <xf:group ref="cvPart[@type='other']">
+               <xf:label>
+                  Autres mentions
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="cvEntry" at="1" position="before" origin="instance('cvCopy')/cvPart[@type='other']/cvEntry" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:label>
+               <xf:input ref="head">
+                  <xf:label>Label</xf:label>
+               </xf:input>
+               <xf:repeat nodeset="cvEntry">
+                  <xf:label>
+                     Entrée
+                     <xf:trigger ref="self::cvEntry[count(parent::cvPart/cvEntry) > 1]">
+                        <xf:label>-</xf:label>
+                        <xf:delete nodeset="." ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:label>
+                  <xf:input ref="head">
+                     <xf:label>Institution</xf:label>
+                  </xf:input>
+                  <xf:input ref="desc">
+                     <xf:label>Intitulé</xf:label>
+                  </xf:input>
+                  <xf:group ref="list[@type='resources']">
+                     <xf:label>
+                        Ressources en ligne
+                        <xf:trigger>
+                           <xf:label>+</xf:label>
+                           <xf:insert context="." nodeset="item" at="last()" position="after" origin="instance('cvCopy')/cvPart[@type='workExperience']/cvEntry/list[@type='resources']/item" ev:event="DOMActivate"/>
+                        </xf:trigger>
+                     </xf:label>
+                     <xf:repeat nodeset="item">
+                        <xf:input ref="ref">
+                           <xf:label>Label</xf:label>
+                        </xf:input>
+                        <xf:input ref="ref/@target">
+                           <xf:label>url</xf:label>
+                        </xf:input>
+                        <xf:trigger ref="self::item[count(parent::list/item) > 1]">
+                           <xf:label>-</xf:label>
+                           <xf:delete nodeset="." ev:event="DOMActivate"/>
+                        </xf:trigger>
+                     </xf:repeat>
+                  </xf:group>
+               </xf:repeat>
+            </xf:group>
+         </xf:case>
+         <xf:case id="publicationsPanel" selected="false">
+            <xf:group ref="cvPart[@type='publications']">
+               <xf:label>
+                  Liste des travaux / publications
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="cvEntry" at="1" position="before" origin="instance('cvCopy')/cvPart[@type='publications']/cvEntry" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:label>
+               <xf:input ref="head">
+                  <xf:label>Type</xf:label>
+               </xf:input>
+               <xf:repeat nodeset="cvEntry">
+                  <xf:label>
+                     Groupe bibliographique
+                     <xf:trigger ref="self::cvEntry[count(parent::cvPart/cvEntry) > 1]">
+                        <xf:label>-</xf:label>
+                        <xf:delete nodeset="." ev:event="DOMActivate"/>
+                     </xf:trigger>
+                  </xf:label>
+                  <xf:input ref="head">
+                     <xf:label>Label</xf:label>
+                  </xf:input>
+                  <xf:repeat nodeset="bibl">
+                     <xf:input ref=".">
+                        <xf:label>
+                           Référence blbiographique
+                           <xf:trigger ref="self::bibl[count(parent::cvEntry/bibl) > 1]">
+                              <xf:label>-</xf:label>
+                              <xf:delete nodeset="." ev:event="DOMActivate"/>
+                           </xf:trigger>
+                        </xf:label>
+                     </xf:input>
+                  </xf:repeat>
+                  <xf:trigger>
+                     <xf:label>+</xf:label>
+                     <xf:insert context="." nodeset="bibl" at="last()" position="after" origin="instance('cvCopy')/cvPart[@type='publications']/cvEntry/bibl" ev:event="DOMActivate"/>
+                  </xf:trigger>
+               </xf:repeat>
+            </xf:group>
+         </xf:case>
+      </xf:case>
+      <xf:case id="configPanel" selected="false">
+         <labe for="colorPicker">Couleur du thème : </labe>
+         <input type="color" id="colorPicker" name="colorPicker"/>
+         <br/>
+         <labe for="mainFontPicker">Font principale : </labe>
+         <input type="text" id="mainFontPicker" name="mainFontPicker"/>
+         <br/>
+         <labe for="subFontPicker">Font secondaire : </labe>
+         <input type="text" id="subFontPicker" name="subFontPicker"/>
+      </xf:case>
+      <xf:case id="viewPanel" selected="false">
+         <div class="view">
+            <xf:output value="transform(instance('cv'),'files/cv2html.xsl', false)" mediatype="text/html"/>
+         </div>
+      </xf:case>
+      <script defer="defer" type="text/javascript">
+         var colorInput = document.getElementById("colorPicker");
+
+         colorInput.addEventListener("input", function(){
+            var newColor = colorInput.value;
+            console.log('Nouvelle couleur : ', newColor)
+            document.documentElement.style.setProperty('--mainColor', newColor);
+            
+         }, false);
+         
+         var mainFont = document.getElementById("mainFontPicker");
+         
+         mainFont.addEventListener("input", function(){
+            var newMainFont = mainFont.value;
+            console.log('Nouvelle font principale : ', newMainFont)
+            document.documentElement.style.setProperty('--mainFont', newMainFont);
+            
+         }, false);
+         
+         var subFont = document.getElementById("subFontPicker");
+         
+         subFont.addEventListener("input", function(){
+            var newSubFont = subFont.value;
+            console.log('Nouvelle font secondaire : ', newSubFont)
+            document.documentElement.style.setProperty('--subFont', newSubFont);
+            
+         }, false);
+         
+      </script>
+   </body>
+</html>

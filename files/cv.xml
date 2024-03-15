@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="files/cv2html.xsl"?>
-<curriculum xmlns="http://www.cv.fr/ns">
+<curriculum>
    <cvPart type="identity">
-      <persName/>
-      <occupation/>
+      <persName></persName>
+      <occupation></occupation>
       <contact>
          <address>
-            <addrLine/>
+            <addrLine></addrLine>
          </address>
-         <phone/>
-         <mail><ref type="mailto" target=""/></mail>
-         <github><ref type="link" target=""/></github>
+         <phone></phone>
+         <mail><ref type="mailto" target=""></ref></mail>
+         <github><ref type="link" target=""></ref></github>
       </contact>
    </cvPart>
    <cvPart type="education">
@@ -19,18 +19,30 @@
          <orgName/>
          <placeName/>
          <date from="" to=""/>
-         <degree/>
+         <degree></degree>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="examination">
+      <head>Concours</head>
+      <cvEntry type="examination">
+         <orgName/>
+         <desc></desc>
+         <date when=""/>
+         <rank/>
       </cvEntry>
    </cvPart>
    <cvPart type="workExperience">
       <head>Expérience professionnelle</head>
       <cvEntry type="experience">
-         <position/>
-         <orgName/>
-         <placeName/>
+         <position></position>
+         <orgName></orgName>
+         <placeName></placeName>
          <date from="" to=""/>
-         <list type="taks">
+         <list type="tasks">
             <item/>
+         </list>
+         <list type="resources">
+            <item><ref type="link" target=""></ref></item>
          </list>
       </cvEntry>
    </cvPart>
@@ -40,6 +52,16 @@
          <head/>
          <list>
             <item/>
+         </list>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="other">
+      <head>Projets open source</head>
+      <cvEntry type="project">
+         <head></head>
+         <desc></desc>
+         <list type="resources">
+            <item><ref type="link" target=""></ref></item>
          </list>
       </cvEntry>
    </cvPart>

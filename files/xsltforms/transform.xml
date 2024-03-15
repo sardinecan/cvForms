@@ -1,0 +1,26 @@
+<?xml-stylesheet href="xsltforms.xsl" type="text/xsl"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xf="http://www.w3.org/2002/xforms" xmlns:ev="http://www.w3.org/2001/xml-events" lang="en">
+   <head>
+      <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover"/>
+      <title>Hello World in XForms</title>
+      <xf:model>
+         <xf:instance id="alfa" src="alfa.xml"/>
+         <xf:instance id="tango" src="tango.xsl"/>
+         <xf:instance id="output" xmlns="">
+            <data/>
+         </xf:instance>
+      </xf:model>
+   </head>
+   <body>
+      <xf:trigger>
+         <xf:label>Run tango.xsl on alfa.xml</xf:label>
+         <xf:setvalue ev:event="DOMActivate" ref="instance('output')/self::data" value="transform(instance('alfa'),'tango.xsl', false)"/>
+      </xf:trigger>
+      <xf:output ref="instance('output')/self::data" mediatype="text/plain"/>
+      <!--<xf:trigger>
+         <xf:label>Run hotel.xsl on alfa.xml</xf:label>
+         <xf:setvalue ev:event="DOMActivate" ref="instance('output')/self::data" value="transform(instance('alfa'),'hotel.xsl', false)"/>
+      </xf:trigger>-->
+      <xf:output value="transform(instance('alfa'),'hotel.xsl', false)" mediatype="text/html"/>
+   </body>
+</html>

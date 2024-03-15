@@ -1,92 +1,75 @@
-<?xml-stylesheet href="files/xsltforms/xsltforms.xsl" type="text/xsl"?>
-<!--@bug xsltforms => xf:alert|hint|help/@ref doesn't work-->
-<!-- @quest use @target or @valueURI ? -->
-<html 
-   xmlns="http://www.w3.org/1999/xhtml"
-   lang="fr"
-   xmlns:ev="http://www.w3.org/2001/xml-events"
-   xmlns:xf="http://www.w3.org/2002/xforms"
-   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   xmlns:cv="http://www.cv.fr/ns"
-   cv:bogus="fix namespace issue">
-   <!--@rmq error with Safari and xmlns exml as there are spaces in the uri-->
-   <head>
-      <title>eac-cpf Xforms</title>
-      <meta charset="utf-8" />
-      <link href="files/css/cv.css" rel="stylesheet" />
-      <xf:model id="entity">
-         <xf:instance id="cvInstance" src="files/cvInstance.xml"/>
-         <xf:instance id="cvInstanceCopy" src="files/cvInstance.xml"/>
-      </xf:model>
-   </head>
-   <body>
-      <form>
-         <xf:trigger>
-            <xf:label>About</xf:label>
-            <xf:toggle case="presentationPanel" ev:event="DOMActivate" />
-         </xf:trigger>
-         <xf:trigger>
-            <xf:label>Form</xf:label>
-            <xf:toggle case="formPanel" ev:event="DOMActivate" />
-         </xf:trigger>
-         <xf:trigger>
-            <xf:label>View</xf:label>
-            <xf:toggle case="viewPanel" ev:event="DOMActivate" />
-         </xf:trigger>
-         <xf:switch>
-            <xf:case id="presentationPanel" selected="false"></xf:case>
-            <xf:case id="formPanel" selected="true">
-               <xf:group ref="cv:cvPart[@type='identity']">
-                  <xf:label>Identité</xf:label>
-                  <xf:input ref="cv:persName">
-                     <xf:label>Patronyme</xf:label>
-                  </xf:input>
-                  <xf:input ref="cv:occupation">
-                     <xf:label>Poste</xf:label>
-                  </xf:input>
-                  <xf:group ref="cv:contact">
-                     <xf:label>Contact</xf:label>
-                     <xf:input ref="cv:phone">
-                        <xf:label>Téléphone</xf:label>
-                     </xf:input>
-                     <xf:group ref="cv:address">
-                        <xf:label>Adresse</xf:label>
-                        <xf:repeat nodeset="cv:addrLine">
-                           <xf:input ref=".">
-                              <xf:label>Ligne d’adresse</xf:label>
-                           </xf:input>
-                           <xf:trigger ref="self::cv:addrLine[count(parent::cv:address/cv:addrLine) > 1]">
-                              <xf:label>- ligne d’adresse</xf:label>
-                              <xf:delete nodeset="." ev:event="DOMActivate"/>
-                           </xf:trigger>
-                        </xf:repeat>
-                     </xf:group>
-                     <xf:input ref="cv:mail/cv:ref">
-                        <xf:label>Adresse mail</xf:label>
-                     </xf:input>
-                     <xf:input ref="cv:github/cv:ref">
-                        <xf:label>Github</xf:label>
-                     </xf:input>
-                  </xf:group>
-               </xf:group>
-            </xf:case>
-            <xf:case id="viewPanel" selected="false">
-               <div class="view">
-                  <div class="identity">
-                     <h1><xf:output value="cv:cvPart[@type='identity']/cv:persName"/></h1>
-                     <h2 class="occupation"><xf:output value="cv:cvPart[@type='identity']/cv:occupation"/></h2>
-                     <section class="contact">
-                        <h3>Coordonnées</h3><ul>
-                           <li class="address"><xf:output value="cv:cvPart[@type='identity']/cv:contact/cv:address"/></li>
-                           <li class="phone"><xf:output value="cv:cvPart[@type='identity']/cv:contact/cv:phone"/></li>
-                           <li class="mail"><a href="mailto:{normalize-space(cv:cvPart[@type='identity']/cv:contact/cv:mail)}"><xf:output value="cv:cvPart[@type='identity']/cv:contact/cv:mail"/></a></li>
-                           <li class="github"><a href="mailto:{normalize-space(cv:cvPart[@type='identity']/cv:contact/cv:github)}"><xf:output value="cv:cvPart[@type='identity']/cv:contact/cv:github"/></a></li>
-                        </ul>
-                     </section>
-                  </div>
-               </div>
-            </xf:case>
-         </xf:switch>
-      </form>
-   </body>
-</html>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="files/cv2html.xsl"?>
+<curriculum>
+   <cvPart type="identity">
+      <persName></persName>
+      <occupation></occupation>
+      <contact>
+         <address>
+            <addrLine></addrLine>
+         </address>
+         <phone></phone>
+         <mail><ref type="mailto" target=""></ref></mail>
+         <github><ref type="link" target=""></ref></github>
+      </contact>
+   </cvPart>
+   <cvPart type="education">
+      <head>Formation</head>
+      <cvEntry type="diploma">
+         <orgName/>
+         <placeName/>
+         <date from="" to=""/>
+         <degree></degree>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="examination">
+      <head>Concours</head>
+      <cvEntry type="examination">
+         <orgName/>
+         <desc></desc>
+         <date when=""/>
+         <rank/>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="workExperience">
+      <head>Expérience professionnelle</head>
+      <cvEntry type="experience">
+         <position></position>
+         <orgName></orgName>
+         <placeName></placeName>
+         <date from="" to=""/>
+         <list type="tasks">
+            <item/>
+         </list>
+         <list type="resources">
+            <item><ref type="link" target=""></ref></item>
+         </list>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="skills">
+      <head>Compétences techniques</head>
+      <cvEntry type="programming">
+         <head/>
+         <list>
+            <item/>
+         </list>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="other">
+      <head>Projets open source</head>
+      <cvEntry type="project">
+         <head></head>
+         <desc></desc>
+         <list type="resources">
+            <item><ref type="link" target=""></ref></item>
+         </list>
+      </cvEntry>
+   </cvPart>
+   <cvPart type="publications">
+      <head>Liste des travaux / publications</head>
+      <cvEntry type="scholar">
+         <head/>
+         <bibl/>
+      </cvEntry>
+   </cvPart>
+</curriculum>
