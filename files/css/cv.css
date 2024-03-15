@@ -185,7 +185,6 @@ a:visited {
   color: var(--mainColor);
 }
 
-
 @page :first {
    margin: 2cm;
    margin-top: 1cm;
