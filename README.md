@@ -6,3 +6,5 @@ A ready to print CSS allows you to save or print your *curriculum vitæ* as PDF.
 You can change color and fonts wiht the `configuration` panel.
 
 All empty sections will be ignored for the output.
+
+You can access the form [here](https://sardinecan.github.io/cvForms/cvForms.xml)!
