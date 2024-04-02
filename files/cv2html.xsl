@@ -36,7 +36,7 @@
          <xsl:when test="normalize-space(.)!='' and normalize-space(.)!=normalize-space(./head)">
             <div class="{@type}">
                <xsl:apply-templates/>
-            </div>      
+            </div>
          </xsl:when>
          <xsl:otherwise/>
       </xsl:choose>
@@ -159,7 +159,7 @@
    
    <xsl:template match="cvEntry/head">
       <section class="head">
-         <xsl:apply-templates/>   
+         <xsl:apply-templates/>
       </section>
    </xsl:template>
    
@@ -223,6 +223,10 @@
             </xsl:for-each>
          </ul>
       </section>
+   </xsl:template>
+   
+   <xsl:template match="addrLine">
+      <xsl:apply-templates/><br/>
    </xsl:template>
    
 </xsl:stylesheet>
