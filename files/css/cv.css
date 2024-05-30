@@ -196,6 +196,7 @@ a:visited {
 @media print {
    body {
       text-align: justify;
+      overflow: visible;
    }
    
    .form {
